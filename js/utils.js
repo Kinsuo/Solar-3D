@@ -32,6 +32,8 @@ const PLANET_DATA = {
         diameter: '1,392,700 km',
         mass: '1.989 × 10³⁰ kg',
         rotationPeriod: '25-35 天',
+        rotationPeriodDays: 25.38,
+        axialTilt: 7.25,
         temperature: '5,500 °C'
     },
     mercury: {
@@ -41,6 +43,8 @@ const PLANET_DATA = {
         distance: MERCURY_ORBIT_AU,
         eccentricity: 0.2056,
         period: 88,
+        inclination: 7.005,
+        ascendingNode: 48.331,
         color: 0x8c7853,
         speed: 1 / 88,
         initialAngle: 4.1,
@@ -48,6 +52,8 @@ const PLANET_DATA = {
         diameter: '4,879 km',
         mass: '3.301 × 10²³ kg',
         rotationPeriod: '58.6 天',
+        rotationPeriodDays: 58.646,
+        axialTilt: 0.034,
         orbitalSpeed: '47.87 km/s',
         temperature: '-180 ~ 430 °C'
     },
@@ -58,6 +64,8 @@ const PLANET_DATA = {
         distance: 0.723,
         eccentricity: 0.0067,
         period: 225,
+        inclination: 3.394,
+        ascendingNode: 76.68,
         color: 0xffc649,
         speed: 1 / 225,
         initialAngle: 3.4,
@@ -65,6 +73,8 @@ const PLANET_DATA = {
         diameter: '12,104 km',
         mass: '4.867 × 10²⁴ kg',
         rotationPeriod: '243 天',
+        rotationPeriodDays: -243.02,
+        axialTilt: 177.36,
         orbitalSpeed: '35.02 km/s',
         temperature: '465 °C'
     },
@@ -75,6 +85,8 @@ const PLANET_DATA = {
         distance: 1.0,
         eccentricity: 0.0167,
         period: 365.25,
+        inclination: 0.0,
+        ascendingNode: 0.0,
         color: 0x6b93d6,
         speed: 1 / 365.25,
         initialAngle: 6.2,
@@ -82,6 +94,8 @@ const PLANET_DATA = {
         diameter: '12,742 km',
         mass: '5.972 × 10²⁴ kg',
         rotationPeriod: '23.9 小时',
+        rotationPeriodDays: 0.997269,
+        axialTilt: 23.44,
         orbitalSpeed: '29.78 km/s',
         temperature: '-88 ~ 58 °C',
         moons: [
@@ -92,6 +106,8 @@ const PLANET_DATA = {
                 distance: 0.1, // scene distance
                 eccentricity: 0.0549,
                 period: 27.3,
+                inclination: 5.145,
+                ascendingNode: 125.08,
                 color: 0xaaaaaa,
                 speed: 1 / 27.3,
                 initialAngle: 0,
@@ -99,6 +115,8 @@ const PLANET_DATA = {
                 diameter: '3,474 km',
                 mass: '7.342 × 10²² kg',
                 rotationPeriod: '27.3 天',
+                rotationPeriodDays: 27.321,
+                axialTilt: 6.68,
                 orbitalSpeed: '1.022 km/s',
                 temperature: '-173 ~ 127 °C'
             }
@@ -111,6 +129,8 @@ const PLANET_DATA = {
         distance: 1.524,
         eccentricity: 0.0934,
         period: 687,
+        inclination: 1.850,
+        ascendingNode: 49.562,
         color: 0xc1440e,
         speed: 1 / 687,
         initialAngle: 0.9,
@@ -118,6 +138,8 @@ const PLANET_DATA = {
         diameter: '6,779 km',
         mass: '6.417 × 10²³ kg',
         rotationPeriod: '24.6 小时',
+        rotationPeriodDays: 1.025957,
+        axialTilt: 25.19,
         orbitalSpeed: '24.07 km/s',
         temperature: '-153 ~ 20 °C'
     },
@@ -128,50 +150,54 @@ const PLANET_DATA = {
         distance: 5.204,
         eccentricity: 0.0489,
         period: 4333,
+        inclination: 1.303,
+        ascendingNode: 100.464,
         color: 0xd8ca9d,
         speed: 1 / 4333,
         initialAngle: 0.3,
-        info: '木星是太阳系体积与质量最大的气态巨行星。它的经典地标是南半球被称为“大红斑”的巨型反气旋风暴。它有着极其庞大的卫星系统，就像一个迷你的小恒星系。',
+        info: '木星是太阳系体积与质量最大的气态巨行星。它的经典地标是南半球被称为“大红斑”的巨型反气旋风暴。它有着极其庞大的卫星系统，就像一个迷进行星系。',
         diameter: '139,820 km',
         mass: '1.898 × 10²⁷ kg',
         rotationPeriod: '9.93 小时',
+        rotationPeriodDays: 0.41354,
+        axialTilt: 3.13,
         orbitalSpeed: '13.07 km/s',
         temperature: '-110 °C',
         moons: [
             {
                 name: '木卫一', nameEn: 'Io',
                 radius: SCENE_RADIUS_EARTH * 0.28, distance: 0.25, eccentricity: 0.0041,
-                period: 1.77, color: 0xddcc66, speed: 1 / 1.77,
+                period: 1.77, inclination: 0.04, ascendingNode: 0.0, color: 0xddcc66, speed: 1 / 1.77,
                 info: '木卫一（伊奥）是太阳系中火山活动最剧烈的天体。它的表面布满了数百座活跃火山，不断喷发的硫磺将其染成了独特的黄色。木星强大的潮汐力是其火山活动的核心驱动力。',
                 diameter: '3,643 km', mass: '8.93 × 10²² kg',
-                rotationPeriod: '1.77 天', orbitalSpeed: '17.33 km/s',
+                rotationPeriod: '1.77 天', rotationPeriodDays: 1.769, axialTilt: 0.0, orbitalSpeed: '17.33 km/s',
                 temperature: '-143 °C'
             },
             {
                 name: '木卫二', nameEn: 'Europa',
                 radius: SCENE_RADIUS_EARTH * 0.24, distance: 0.35, eccentricity: 0.0094,
-                period: 3.55, color: 0xbbbbff, speed: 1 / 3.55,
+                period: 3.55, inclination: 0.47, ascendingNode: 0.0, color: 0xbbbbff, speed: 1 / 3.55,
                 info: '木卫二（欧罗巴）表面覆盖着一层光滑的冰壳，冰层下方极可能隐藏着一片液态海洋。科学家认为它是太阳系中最有可能存在地外生命的天体之一，是NASA未来探测的重点目标。',
                 diameter: '3,122 km', mass: '4.80 × 10²² kg',
-                rotationPeriod: '3.55 天', orbitalSpeed: '13.74 km/s',
+                rotationPeriod: '3.55 天', rotationPeriodDays: 3.551, axialTilt: 0.1, orbitalSpeed: '13.74 km/s',
                 temperature: '-160 °C'
             },
             {
                 name: '木卫三', nameEn: 'Ganymede',
                 radius: SCENE_RADIUS_EARTH * 0.41, distance: 0.50, eccentricity: 0.0013,
-                period: 7.15, color: 0xcccccc, speed: 1 / 7.15,
+                period: 7.15, inclination: 0.20, ascendingNode: 0.0, color: 0xcccccc, speed: 1 / 7.15,
                 info: '木卫三（盖尼米德）是太阳系中最大的卫星，直径甚至超过了水星。它是唯一已知拥有自身磁场的卫星，表面由古老的暗色撞击坑区域和明亮的槽纹地形交替组成。',
                 diameter: '5,268 km', mass: '1.48 × 10²³ kg',
-                rotationPeriod: '7.15 天', orbitalSpeed: '10.88 km/s',
+                rotationPeriod: '7.15 天', rotationPeriodDays: 7.155, axialTilt: 0.2, orbitalSpeed: '10.88 km/s',
                 temperature: '-163 °C'
             },
             {
                 name: '木卫四', nameEn: 'Callisto',
                 radius: SCENE_RADIUS_EARTH * 0.38, distance: 0.70, eccentricity: 0.0074,
-                period: 16.69, color: 0x999999, speed: 1 / 16.69,
+                period: 16.69, inclination: 0.28, ascendingNode: 0.0, color: 0x999999, speed: 1 / 16.69,
                 info: '木卫四（卡里斯托）是伽利略卫星中最外层的一颗，表面布满了古老的撞击坑，是太阳系中撞击坑密度最高的天体之一。它距离木星较远，受辐射影响较小，是未来人类建立木星系基地的候选地。',
                 diameter: '4,821 km', mass: '1.08 × 10²³ kg',
-                rotationPeriod: '16.69 天', orbitalSpeed: '8.20 km/s',
+                rotationPeriod: '16.69 天', rotationPeriodDays: 16.689, axialTilt: 0.4, orbitalSpeed: '8.20 km/s',
                 temperature: '-139 °C'
             }
         ]
@@ -183,6 +209,8 @@ const PLANET_DATA = {
         distance: 9.583,
         eccentricity: 0.0565,
         period: 10759,
+        inclination: 2.489,
+        ascendingNode: 113.665,
         color: 0xfad5a5,
         speed: 1 / 10759,
         initialAngle: 5.5,
@@ -190,6 +218,8 @@ const PLANET_DATA = {
         diameter: '116,460 km',
         mass: '5.683 × 10²⁶ kg',
         rotationPeriod: '10.7 小时',
+        rotationPeriodDays: 0.444,
+        axialTilt: 26.73,
         orbitalSpeed: '9.68 km/s',
         temperature: '-140 °C',
         // 主环约 1.2～2.3 倍土星赤道半径（示意）
@@ -207,6 +237,8 @@ const PLANET_DATA = {
         distance: 19.19,
         eccentricity: 0.0457,
         period: 30689,
+        inclination: 0.773,
+        ascendingNode: 74.006,
         color: 0x4fd0e7,
         speed: 1 / 30689,
         initialAngle: 4.7,
@@ -214,6 +246,8 @@ const PLANET_DATA = {
         diameter: '50,724 km',
         mass: '8.681 × 10²⁵ kg',
         rotationPeriod: '17.2 小时',
+        rotationPeriodDays: -0.718,
+        axialTilt: 97.77,
         orbitalSpeed: '6.80 km/s',
         temperature: '-195 °C'
     },
@@ -224,6 +258,8 @@ const PLANET_DATA = {
         distance: 30.07,
         eccentricity: 0.0113,
         period: 60182,
+        inclination: 1.770,
+        ascendingNode: 131.784,
         color: 0x4b70dd,
         speed: 1 / 60182,
         initialAngle: 5.9,
@@ -231,6 +267,8 @@ const PLANET_DATA = {
         diameter: '49,244 km',
         mass: '1.024 × 10²⁶ kg',
         rotationPeriod: '16.1 小时',
+        rotationPeriodDays: 0.671,
+        axialTilt: 28.32,
         orbitalSpeed: '5.43 km/s',
         temperature: '-201 °C'
     },
@@ -485,4 +523,38 @@ function createRingTexture() {
         ctx.fillRect(x, 0, 1, 2);
     }
     return new THREE.CanvasTexture(canvas);
+}
+
+// 格式化倍速为带时间单位的字符串
+function formatSpeed(timeScale) {
+    const secondsPerDay = 24 * 3600;
+    const simSecondsPerSec = timeScale * secondsPerDay;
+    
+    if (simSecondsPerSec < 60) {
+        return `${Math.round(simSecondsPerSec)} 秒/秒`;
+    } else if (simSecondsPerSec < 3600) {
+        const mins = Math.floor(simSecondsPerSec / 60);
+        const secs = Math.round(simSecondsPerSec % 60);
+        return secs > 0 ? `${mins}分${secs}秒/秒` : `${mins} 分钟/秒`;
+    } else if (simSecondsPerSec < secondsPerDay) {
+        const hours = Math.floor(simSecondsPerSec / 3600);
+        const mins = Math.round((simSecondsPerSec % 3600) / 60);
+        return mins > 0 ? `${hours}小时${mins}分/秒` : `${hours} 小时/秒`;
+    } else {
+        const days = Math.round(timeScale * 10) / 10;
+        if (days >= 365) {
+            const years = (days / 365.25).toFixed(1);
+            return `${days} 天/秒 (约 ${years} 年/秒)`;
+        }
+        return `${days} 天/秒`;
+    }
+}
+
+// 格式化公转周期
+function formatPeriod(days) {
+    if (days >= 365.25) {
+        const years = (days / 365.25).toFixed(1);
+        return `${days} 天 (约 ${years} 年)`;
+    }
+    return `${days} 天`;
 }
