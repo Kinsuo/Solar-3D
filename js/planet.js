@@ -43,6 +43,7 @@ class Planet {
         }
         
         this.mesh = new THREE.Mesh(geometry, material);
+        this.mesh.radius = data.radius;
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
         
@@ -93,21 +94,30 @@ class Planet {
             this.mesh.add(this.ringMesh);
         }
         
+        // 创建轨道平面（实现三维轨道倾角和升交点黄经）
+        this.orbitPlane = new THREE.Group();
+        this.orbitPlane.rotation.z = THREE.MathUtils.degToRad(data.inclination || 0);
+        this.orbitPlane.rotation.y = THREE.MathUtils.degToRad(data.ascendingNode || 0);
+        
+        // 创建自转轴倾角组（实现自转倾角）
+        this.tiltGroup = new THREE.Group();
+        this.tiltGroup.rotation.z = THREE.MathUtils.degToRad(data.axialTilt || 0);
+        this.tiltGroup.add(this.mesh);
+        
         // 创建轨道组
         this.orbitGroup = new THREE.Group();
-        this.orbitGroup.add(this.mesh);
+        this.orbitGroup.add(this.tiltGroup);
         
         // 创建轨道线
         if (this.distance > 0) {
             this.orbitLine = createOrbitLine(this.distance, this.eccentricity);
-            scene.add(this.orbitLine);
+            this.orbitPlane.add(this.orbitLine); // 轨道线放在三维倾斜平面上
         }
         
-        // 创建标签
-        this.label = createPlanetLabel(this.mesh, this.name);
-        this.orbitGroup.add(this.label);
         
-        scene.add(this.orbitGroup);
+        
+        this.orbitPlane.add(this.orbitGroup);
+        scene.add(this.orbitPlane);
         
         // Moons
         this.moons = [];
@@ -134,11 +144,22 @@ class Planet {
     update(deltaTime, timeScale = 1) {
         // 注意：公转位置的角度更新已移交给 setAngleFromDate 统一管理（由绝对时间驱动，以支持非匀速即时速）
 
-        
         // 行星自转
-        this.mesh.rotation.y += deltaTime * 0.01;
-        if (this.clouds) {
-            this.clouds.rotation.y += deltaTime * 0.012; // 云层比自转稍快一点
+        if (this.data.rotationPeriodDays) {
+            const daysPassed = deltaTime * timeScale;
+            // 真实物理自转角位移（弧度）
+            const rotationAngle = (daysPassed / this.data.rotationPeriodDays) * 2 * Math.PI;
+            this.mesh.rotation.y += rotationAngle;
+            
+            // 地球云层比地表自转稍快一些
+            if (this.clouds) {
+                this.clouds.rotation.y += rotationAngle * 1.08;
+            }
+        } else {
+            this.mesh.rotation.y += deltaTime * 0.01;
+            if (this.clouds) {
+                this.clouds.rotation.y += deltaTime * 0.012;
+            }
         }
         
         // 更新卫星
@@ -217,6 +238,21 @@ class Planet {
             this.orbitLine.material.color.set(0x444444);
             this.orbitLine.material.opacity = 0.3;
             this.orbitLine.material.needsUpdate = true;
+        }
+    }
+    
+    setSizeScale(scale) {
+        this.mesh.scale.set(scale, scale, scale);
+        
+        // 提升行星上方的科普文字标签高度，防止和放大的球体穿插
+        if (this.label) {
+            const baseRadius = this.data.radius;
+            this.label.position.y = baseRadius * scale * 2.0 + 0.15;
+        }
+        
+        // 递归处理子天体/卫星
+        if (this.moons) {
+            this.moons.forEach(moon => moon.setSizeScale(scale));
         }
     }
 }
