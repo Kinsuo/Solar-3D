@@ -55,16 +55,16 @@ class SolarSystem {
         this.sun.add(glowMesh);
         
         // 添加太阳光
-        const light = new THREE.PointLight(0xffffff, 2, 150);
-        light.castShadow = true;
-        light.shadow.mapSize.width = 2048;
-        light.shadow.mapSize.height = 2048;
-        light.shadow.bias = -0.001;
-        this.scene.add(light);
+        this.sunLight = new THREE.PointLight(0xffffff, 2, 150);
+        this.sunLight.castShadow = true;
+        this.sunLight.shadow.mapSize.width = 2048;
+        this.sunLight.shadow.mapSize.height = 2048;
+        this.sunLight.shadow.bias = -0.001;
+        this.scene.add(this.sunLight);
         
         // 环境光
-        const ambientLight = new THREE.AmbientLight(0x404040, 0.15);
-        this.scene.add(ambientLight);
+        this.ambientLight = new THREE.AmbientLight(0xffffff, 0.05);
+        this.scene.add(this.ambientLight);
     }
 
     createAsteroids() {
@@ -283,6 +283,20 @@ class SolarSystem {
             planet.setAngleFromDate(date);
         });
     }
+
+    // 根据日期设置指定彗星位置（以 2061-07-28 哈雷彗星本次过近日点为基准，开普勒方程求解真近点角）
+    setCometDate(date, cometName = '哈雷彗星') {
+        const comets = this.getComets();
+        const comet = comets.find(c => c.name === cometName);
+        if (!comet || typeof solveKepler !== 'function') return;
+        const perihelion = new Date('2061-07-28T00:00:00Z');
+        const days = (date - perihelion) / 86400000;
+        const M = (days / comet.period) * Math.PI * 2;
+        const E = solveKepler(M % (Math.PI * 2), comet.e);
+        const nu = 2 * Math.atan(Math.sqrt((1 + comet.e) / (1 - comet.e)) * Math.tan(E / 2));
+        comet.angle = nu;
+        comet.history = []; // 清空尾迹，避免日期跳变时拖出长尾
+    }
     
     setOrbitsVisible(visible) {
         this.planets.forEach(planet => {
@@ -293,6 +307,21 @@ class SolarSystem {
     setLabelsVisible(visible) {
         this.planets.forEach(planet => {
             planet.setLabelVisible(visible);
+        });
+    }
+    
+    setFullLighting(enabled) {
+        if (this.ambientLight) {
+            this.ambientLight.intensity = enabled ? 0.95 : 0.05;
+        }
+        if (this.sunLight) {
+            this.sunLight.intensity = enabled ? 1.2 : 2.0;
+        }
+    }
+    
+    setPlanetSizeScale(scale) {
+        this.planets.forEach(planet => {
+            planet.setSizeScale(scale);
         });
     }
     

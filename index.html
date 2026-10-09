@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>太阳系运动模拟</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="container"></div>
+    
+    <!-- 隐藏控制面板按钮 -->
+    <button id="toggle-panel-btn" class="toggle-panel-btn">👁️ 隐藏面板</button>
+    
+    <!-- 行星名称牌：默认视图下显示，点击直达对应行星 -->
+    <div id="planet-bar" class="planet-bar"></div>
+    
+    <!-- 科普介绍卡片 -->
+    <div id="planet-card" class="planet-card hidden" onclick="event.stopPropagation()">
+        <h2 id="planet-card-title">星球名称</h2>
+        <div class="card-content">
+            <p id="planet-card-desc">星球的科普介绍将会显示在这里...</p>
+        </div>
+        <ul id="planet-card-params" class="card-params">
+            <!-- 动态生成的参数将插入这里 -->
+        </ul>
+        <div id="planet-card-distance" class="card-distance hidden">
+            <!-- 暂停时动态显示的实距 -->
+        </div>
+        <button id="close-card-btn" class="close-card-btn">关闭 (或再次点击空白)</button>
+    </div>
+    
+    <!-- 控制面板 -->
+    <div id="control-panel">
+        <h2>太阳系模拟控制</h2>
+        
+        <div class="control-group">
+            <label>当前时间：</label>
+            <div id="current-time" class="time-display">--:--:--</div>
+            <div id="current-date" class="date-display">----/--/--</div>
+        </div>
+        
+        <div class="control-group">
+            <label>设置日期：</label>
+            <input type="datetime-local" id="date-picker" class="date-input">
+            <button id="set-date-btn" class="btn">跳转到日期</button>
+        </div>
+        
+        <div class="control-group">
+            <label>时间控制：</label>
+            <div class="btn-row">
+                <button id="play-pause-btn" class="btn btn-primary">暂停</button>
+                <button id="reset-btn" class="btn">重置时间</button>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label>时间加速速度：</label>
+            <div class="speed-slider-container">
+                <input type="range" id="speed-slider" min="0" max="100" value="45" class="speed-slider">
+                <div class="speed-slider-labels">
+                    <span>1秒/秒</span>
+                    <span>1分/秒</span>
+                    <span>1时/秒</span>
+                    <span>1天/秒</span>
+                    <span>1000天/秒</span>
+                </div>
+            </div>
+            <div class="speed-display-group">
+                <span class="speed-display-label">当前加速：</span>
+                <span id="speed-display-value" class="speed-value">1 小时/秒</span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label>天体大小缩放：</label>
+            <div class="speed-slider-container">
+                <input type="range" id="size-slider" min="1" max="10" step="0.5" value="1" class="speed-slider">
+                <div class="speed-slider-labels">
+                    <span>1x (写实比)</span>
+                    <span>3x</span>
+                    <span>5x</span>
+                    <span>8x</span>
+                    <span>10x (最大)</span>
+                </div>
+            </div>
+            <div class="speed-display-group">
+                <span class="speed-display-label">当前缩放：</span>
+                <span id="size-display-value" class="speed-value">1.0x</span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label>显示选项：</label>
+            <label class="checkbox-label">
+                <input type="checkbox" id="show-orbits" checked> 显示轨道
+            </label>
+        
+            <label class="checkbox-label">
+                <input type="checkbox" id="full-lighting"> 全亮模式 (显示暗面)
+            </label>
+        </div>
+        
+        <div class="control-group">
+            <button id="reset-view-btn" class="btn">重置视角</button>
+        </div>
+
+        <div class="control-group">
+            <label>预设视角：</label>
+            <div class="btn-row">
+                <button id="view-overview-btn" class="btn">全景</button>
+                <button id="view-top-btn" class="btn">俯视</button>
+            </div>
+            <div class="btn-row">
+                <button id="view-side-btn" class="btn">侧视</button>
+                <button id="view-inner-btn" class="btn">内太阳系</button>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>天文事件：</label>
+            <select id="event-select" class="event-select"></select>
+            <div id="event-desc" class="event-desc"></div>
+            <button id="event-go-btn" class="btn">前往该天象</button>
+        </div>
+
+        <div class="control-group">
+            <label>动画导出（优先 MP4）：</label>
+            <div class="record-actions">
+                <button type="button" id="record-start-btn" class="btn btn-record">开始录制</button>
+                <button type="button" id="record-stop-btn" class="btn btn-record-stop" disabled>停止并保存</button>
+            </div>
+            <div id="record-status" class="record-status">未录制</div>
+        </div>
+        
+        <div class="control-group shortcut-hint">
+            快捷键：空格 播放/暂停 · R 重置视角 · T 俯视图 · 1–8 选择行星 · Esc 取消选择
+        </div>
+        
+        <div class="info-panel">
+            <div id="planet-info">鼠标悬停在行星上查看信息</div>
+        </div>
+    </div>
+    
+    <!-- 加载提示 -->
+    <div id="loading">加载中...</div>
+    
+    <!-- 引入Three.js库 -->
+    <script src="js/three.min.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    
+    <!-- 引入项目脚本 -->
+    <script src="js/texturesBase64.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/planet.js"></script>
+    <script src="js/controls.js"></script>
+    <script src="js/solarSystem.js"></script>
+    <script src="js/recorder.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
