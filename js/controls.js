@@ -659,7 +659,7 @@ class SolarSystemControls {
             overview: { pos: [0, 20, 50], target: [0, 0, 0] },  // 全景（默认）
             top:      { pos: [0, 95, 0.01], target: [0, 0, 0] }, // 俯视
             side:     { pos: [0, 8, 95], target: [0, 0, 0] },    // 侧视
-            inner:    { pos: [0, 14, 30], target: [0, 0, 0] },  // 内太阳系
+            inner:    { pos: [0, 6, 10], target: [0, 0, 0] },   // 内太阳系（聚焦水星—火星）
         };
         const bind = (id, key) => {
             const btn = document.getElementById(id);
